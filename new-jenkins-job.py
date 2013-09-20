@@ -3,6 +3,7 @@
 import getopt
 import sys
 import os
+import shutil
 
 JENKINS_JOBS_DIR = "/var/lib/jenkins/jobs"
 TEMPLATE_CONFIG = "./config.xml.template"
@@ -32,14 +33,21 @@ def new_config(template, name, project_url, git_url, component, new_path):
 def new_jenkins_job(name, project_url, git_url, component):
     print "Creating new Jenkins Github Pull Request Builder job for %s" % name
     print "Creating directory in jenkins...",
-    os.makedirs(os.path.join(JENKINS_JOBS_DIR, name))
+    job_path = os.path.join(JENKINS_JOBS_DIR, name)
+    os.mkdir(job_path)
     print "Done"
     print "Creating build config...",
-    conf_path = os.path.join(JENKINS_JOBS_DIR, name, "config.xml")
-    new_config(TEMPLATE_CONFIG, name, project_url, git_url, component,
-               conf_path)
-    print "Done"
-    print "Restart Jenkins using 'sudo service jenkins restart'"
+    try:
+        conf_path = os.path.join(JENKINS_JOBS_DIR, name, "config.xml")
+        new_config(TEMPLATE_CONFIG, name, project_url, git_url, component,
+                   conf_path)
+        print "Done"
+        print "Restart Jenkins using 'sudo service jenkins restart'"
+    except:
+        print "Failed"
+        print "Cleaning up job directory...",
+        shutil.rmtree(job_path, True)
+        print "Done"
 
 
 def main():
