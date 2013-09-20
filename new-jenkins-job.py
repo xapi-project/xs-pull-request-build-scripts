@@ -39,6 +39,7 @@ def new_jenkins_job(name, project_url, git_url, component):
     new_config(TEMPLATE_CONFIG, name, project_url, git_url, component,
                conf_path)
     print "Done"
+    print "Restart Jenkins using 'sudo service jenkins restart'"
 
 
 def main():
