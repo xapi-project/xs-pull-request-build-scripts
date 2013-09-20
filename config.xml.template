@@ -1,23 +1,27 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <project>
   <actions/>
-  <description>&lt;p&gt;This is the &lt;b&gt;template&lt;/b&gt; Github Pull Request Builder job.&lt;/p&gt;&#xd;
+  <description>&lt;p&gt;This is an &lt;b&gt;auto-generated&lt;/b&gt; Github Pull Request Builder job.&lt;/p&gt;&#xd;
 &#xd;
 &lt;p&gt;&#xd;
-To make use of this template, &lt;b&gt;create a copy&lt;/b&gt; of this job and:&#xd;
-&lt;ul&gt;&#xd;
-  &lt;li&gt;Edit the &apos;Github project&apos; field;&lt;/li&gt;&#xd;
-  &lt;li&gt;Edit the &apos;Repository URL&apos; field in the &apos;Source Code Management&apos; section;&lt;/li&gt;&#xd;
-  &lt;li&gt;Set the default value of the &apos;build_system_component&apos; parameter.&lt;/li&gt;&#xd;
-&lt;/li&gt;&#xd;
+  To create a new one execute &lt;code&gt;/var/lib/jenkins/xs-pull-request-build-scripts/new-jenkins-job.py&lt;code&gt;.&#xd;
+  Execute with &lt;code&gt;--help&lt;code&gt; for usage instructions.&#xd;
 &lt;/p&gt;&#xd;
-&#xd;
 &lt;p&gt;&#xd;
   For available build components, execute the following command:&#xd;
   &lt;pre&gt;$ make --quiet --directory /path/to/build.hg targets | awk &apos;{print $1}&apos;&lt;/pre&gt;&#xd;
 &lt;/p&gt;&#xd;
 &#xd;
 &lt;p&gt;E.g. for the xen-api and xenopsd repositories, we use &lt;code&gt;api&lt;/code&gt; and &lt;code&gt;api-libs&lt;/code&gt; respectively.&lt;/p&gt;&#xd;
+&#xd;
+&lt;p&gt;&#xd;
+Or, &lt;b&gt;create a copy&lt;/b&gt; of this job and:&#xd;
+&lt;ul&gt;&#xd;
+  &lt;li&gt;Edit the &apos;Github project&apos; field;&lt;/li&gt;&#xd;
+  &lt;li&gt;Edit the &apos;Repository URL&apos; field in the &apos;Source Code Management&apos; section;&lt;/li&gt;&#xd;
+  &lt;li&gt;Set the default value of the &apos;build_system_component&apos; parameter.&lt;/li&gt;&#xd;
+&lt;/li&gt;&#xd;
+&lt;/p&gt;&#xd;
 &#xd;
 </description>
   <logRotator class="hudson.tasks.LogRotator">
