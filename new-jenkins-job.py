@@ -20,13 +20,13 @@ def usage():
 
 def new_config(template, name, project_url, git_url, component, new_path):
     with open(template, 'r') as in_file:
-        lines = in_file.readlines()
-        lines.replace("@@@GIT_NAME@@@", name)
-        lines.replace("@@@PROJECT_URL@@@", project_url)
-        lines.replace("@@@GIT_URL@@@", git_url)
-        lines.replace("@@@BUILD_SYSTEM_COMPONENT@@@", component)
+        contents = in_file.read()
+        contents.replace("@@@GIT_NAME@@@", name)
+        contents.replace("@@@PROJECT_URL@@@", project_url)
+        contents.replace("@@@GIT_URL@@@", git_url)
+        contents.replace("@@@BUILD_SYSTEM_COMPONENT@@@", component)
         with open(new_path, 'w'):
-            new_path.writelines(lines)
+            new_path.write(contents)
 
 
 def new_jenkins_job(name, project_url, git_url, component):
