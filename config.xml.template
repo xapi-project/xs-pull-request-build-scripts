@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>&lt;p&gt;This is the &lt;b&gt;template&lt;/b&gt; Github Pull Request Builder job.&lt;/p&gt;&#xd;
+&#xd;
+&lt;p&gt;&#xd;
+To make use of this template, &lt;b&gt;create a copy&lt;/b&gt; of this job and:&#xd;
+&lt;ul&gt;&#xd;
+  &lt;li&gt;Edit the &apos;Github project&apos; field;&lt;/li&gt;&#xd;
+  &lt;li&gt;Edit the &apos;Repository URL&apos; field in the &apos;Source Code Management&apos; section;&lt;/li&gt;&#xd;
+  &lt;li&gt;Set the default value of the &apos;build_system_component&apos; parameter.&lt;/li&gt;&#xd;
+&lt;/li&gt;&#xd;
+&lt;/p&gt;&#xd;
+&#xd;
+&lt;p&gt;&#xd;
+  For available build components, execute the following command:&#xd;
+  &lt;pre&gt;$ make --quiet --directory /path/to/build.hg targets | awk &apos;{print $1}&apos;&lt;/pre&gt;&#xd;
+&lt;/p&gt;&#xd;
+&#xd;
+&lt;p&gt;E.g. for the xen-api and xenopsd repositories, we use &lt;code&gt;api&lt;/code&gt; and &lt;code&gt;api-libs&lt;/code&gt; respectively.&lt;/p&gt;&#xd;
+&#xd;
+</description>
+  <logRotator class="hudson.tasks.LogRotator">
+    <daysToKeep>-1</daysToKeep>
+    <numToKeep>5</numToKeep>
+    <artifactDaysToKeep>-1</artifactDaysToKeep>
+    <artifactNumToKeep>5</artifactNumToKeep>
+  </logRotator>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.6">
+      <projectUrl>@@@PROJECT_URL@@@</projectUrl>
+    </com.coravy.hudson.plugins.github.GithubProjectProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>build_system_component</name>
+          <description>The component to &apos;make&apos; from within build.hg (excluding the &apos;-build&apos;)</description>
+          <defaultValue>@@@BUILD_SYSTEM_COMPONENT@@@</defaultValue>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@1.4.0">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <name>@@@GIT_NAME@@@</name>
+        <refspec>+refs/pull/*:refs/remotes/origin/pr/*</refspec>
+        <url>@@@GIT_URL@@@</url>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>${sha1}</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <disableSubmodules>false</disableSubmodules>
+    <recursiveSubmodules>false</recursiveSubmodules>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <authorOrCommitter>false</authorOrCommitter>
+    <clean>false</clean>
+    <wipeOutWorkspace>false</wipeOutWorkspace>
+    <pruneBranches>false</pruneBranches>
+    <remotePoll>false</remotePoll>
+    <ignoreNotifyCommit>false</ignoreNotifyCommit>
+    <useShallowClone>false</useShallowClone>
+    <buildChooser class="hudson.plugins.git.util.DefaultBuildChooser"/>
+    <gitTool>Default</gitTool>
+    <submoduleCfg class="list"/>
+    <relativeTargetDir></relativeTargetDir>
+    <reference></reference>
+    <excludedRegions></excludedRegions>
+    <excludedUsers></excludedUsers>
+    <gitConfigName></gitConfigName>
+    <gitConfigEmail></gitConfigEmail>
+    <skipTag>false</skipTag>
+    <includedRegions></includedRegions>
+    <scmName></scmName>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>true</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers class="vector">
+    <org.jenkinsci.plugins.ghprb.GhprbTrigger plugin="ghprb@1.9">
+      <spec>H/2 * * * *</spec>
+      <adminlist></adminlist>
+      <whitelist></whitelist>
+      <orgslist>xapi-project</orgslist>
+      <cron>H/2 * * * *</cron>
+      <triggerPhrase></triggerPhrase>
+      <onlyTriggerPhrase>false</onlyTriggerPhrase>
+      <useGitHubHooks>false</useGitHubHooks>
+      <permitAll>false</permitAll>
+      <autoCloseFailedPullRequests>false</autoCloseFailedPullRequests>
+    </org.jenkinsci.plugins.ghprb.GhprbTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>~/xs-pull-request-build-scripts/build-pull-request.sh</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers>
+    <hudson.tasks.ArtifactArchiver>
+      <artifacts>rpms/*.rpm</artifacts>
+      <latestOnly>false</latestOnly>
+      <allowEmptyArchive>false</allowEmptyArchive>
+    </hudson.tasks.ArtifactArchiver>
+  </publishers>
+  <buildWrappers/>
+</project>
