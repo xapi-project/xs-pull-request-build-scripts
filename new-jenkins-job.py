@@ -25,8 +25,8 @@ def new_config(template, name, project_url, git_url, component, new_path):
         contents.replace("@@@PROJECT_URL@@@", project_url)
         contents.replace("@@@GIT_URL@@@", git_url)
         contents.replace("@@@BUILD_SYSTEM_COMPONENT@@@", component)
-        with open(new_path, 'w'):
-            new_path.write(contents)
+        with open(new_path, 'w') as out_file:
+            out_file.write(contents)
 
 
 def new_jenkins_job(name, project_url, git_url, component):
