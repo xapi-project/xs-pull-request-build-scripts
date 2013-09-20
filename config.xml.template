@@ -79,7 +79,7 @@ To make use of this template, &lt;b&gt;create a copy&lt;/b&gt; of this job and:&
     <scmName></scmName>
   </scm>
   <canRoam>true</canRoam>
-  <disabled>true</disabled>
+  <disabled>false</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
   <triggers class="vector">
