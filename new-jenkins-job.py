@@ -22,10 +22,10 @@ def usage():
 def new_config(template, name, project_url, git_url, component, new_path):
     with open(template, 'r') as in_file:
         contents = in_file.read()
-        contents.replace("@@@GIT_NAME@@@", name)
-        contents.replace("@@@PROJECT_URL@@@", project_url)
-        contents.replace("@@@GIT_URL@@@", git_url)
-        contents.replace("@@@BUILD_SYSTEM_COMPONENT@@@", component)
+        contents = contents.replace("@@@GIT_NAME@@@", name)
+        contents = contents.replace("@@@PROJECT_URL@@@", project_url)
+        contents = contents.replace("@@@GIT_URL@@@", git_url)
+        contents = contents.replace("@@@BUILD_SYSTEM_COMPONENT@@@", component)
         with open(new_path, 'w') as out_file:
             out_file.write(contents)
 
