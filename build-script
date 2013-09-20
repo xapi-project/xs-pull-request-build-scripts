@@ -3,26 +3,19 @@ set -e
 
 echo "------------------------------------------------------------------------"
 echo "Pull request detected!"
-repo_name=$(echo ${GIT_URL} | awk -F/ '{print $NF}' | tr -d '.git')
+repo_name=$(echo ${GIT_URL} | awk -F/ '{print $NF}' | cut -d. -f1)
 echo "Repo:  ${repo_name}"
 echo "Github target branch: ${ghprbTargetBranch}"
 echo "Pull request #: ${ghprbPullId}"
 echo "Ref: ${sha1}"
 echo "Commit: ${ghprbActualCommit}"
 echo "------------------------------------------------------------------------"
-echo "Finding respective product branch..."
-case ${ghprbTargetBranch} in
-master)
-   local_branch="trunk-ring3"
-   ;;
-clearwater)
-   local_branch="clearwater-ring3"
-   ;;
-*)
-   local_branch=${ghprbTargetBranch}
-esac
-if [ ${local_branch} != ${ghprbTargetBranch} ]; then
-    echo "Using specified override for Github branch '${ghprbTargetBranch}'"
+echo "Finding local branch for '${ghprbTargetBranch}' of '${GIT_URL}'..."
+local_branch=$(grep -e "\s${repo_name}\srefs/heads/${ghprbTargetBranch}\s" \
+    ~xenhg/git-subscriptions | cut -d' ' -f5 | cut -d/ -f2)
+if [ -z $local_branch ]; then
+    echo "Error: Local build branch not found in git-subscriptions."
+    exit 1
 fi
 echo "Github branch '${ghprbTargetBranch}' -> local branch '${local_branch}'"
 echo "------------------------------------------------------------------------"
