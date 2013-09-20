@@ -4,7 +4,7 @@ import getopt
 import sys
 import os
 
-JENKINS_HOME = "/var/lib/jenkins"
+JENKINS_JOBS_DIR = "/var/lib/jenkins/jobs"
 TEMPLATE_CONFIG = "./config.xml.template"
 
 
@@ -32,10 +32,10 @@ def new_config(template, name, project_url, git_url, component, new_path):
 def new_jenkins_job(name, project_url, git_url, component):
     print "Creating new Jenkins Github Pull Request Builder job for %s" % name
     print "Creating directory in jenkins...",
-    os.makedirs(os.path.join(JENKINS_HOME, name))
+    os.makedirs(os.path.join(JENKINS_JOBS_DIR, name))
     print "Done"
     print "Creating build config...",
-    conf_path = os.path.join(JENKINS_HOME, name, "config.xml")
+    conf_path = os.path.join(JENKINS_JOBS_DIR, name, "config.xml")
     new_config(TEMPLATE_CONFIG, name, project_url, git_url, component,
                conf_path)
     print "Done"
