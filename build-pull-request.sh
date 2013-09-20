@@ -10,6 +10,14 @@ echo "Pull request #: ${ghprbPullId}"
 echo "Ref: ${sha1}"
 echo "Commit: ${ghprbActualCommit}"
 echo "------------------------------------------------------------------------"
+echo "Checking Jenkins job properly configured..."
+if [ -n ${build_system_component} ]; then
+    echo "Testing pull request against ${build_system_component} component"
+else
+    echo "Error: Parameter 'build_system_component' not set for Jenkins job!"
+    exit 1
+fi
+echo "------------------------------------------------------------------------"
 echo "Finding local branch for '${ghprbTargetBranch}' of '${GIT_URL}'..."
 local_branch=$(grep -e "\s${repo_name}\srefs/heads/${ghprbTargetBranch}\s" \
     ~xenhg/git-subscriptions | cut -d' ' -f5 | cut -d/ -f2)
@@ -33,7 +41,7 @@ ${git_exe} status 2> /dev/null
 echo "------------------------------------------------------------------------"
 echo "Start the build..."
 make --directory=${build_hg_path} manifest-latest
-make --directory=${build_hg_path} api-build
+make --directory=${build_hg_path} ${build_system_component}-build
 echo "------------------------------------------------------------------------"
 echo "Pulling in the RPMs from the build system to be archived..."
 rpms_dir=${WORKSPACE}/rpms
