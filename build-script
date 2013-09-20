@@ -20,7 +20,7 @@ fi
 echo "Github branch '${ghprbTargetBranch}' -> local branch '${local_branch}'"
 echo "------------------------------------------------------------------------"
 echo "Fetching local branch from build system..."
-build_hg_path=/usr/local/builds/jenkins/${JOB_NAME}/build-${BUILD_NUMBER}
+build_hg_path=/usr/local/builds/jenkins/${BUILD_TAG}
 mkdir -p ${build_hg_path}
 hg clone http://hg/carbon/${local_branch}/build.hg ${build_hg_path}
 echo "------------------------------------------------------------------------"
