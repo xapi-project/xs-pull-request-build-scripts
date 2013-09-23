@@ -3,9 +3,9 @@
 import getopt
 import sys
 import os
-import shutil
+import jenkins
+import urllib2
 
-JENKINS_JOBS_DIR = "/var/lib/jenkins/jobs"
 TEMPLATE_CONFIG = "./config.xml.template"
 
 
@@ -26,28 +26,25 @@ def new_config(template, name, project_url, git_url, component, new_path):
         contents = contents.replace("@@@PROJECT_URL@@@", project_url)
         contents = contents.replace("@@@GIT_URL@@@", git_url)
         contents = contents.replace("@@@BUILD_SYSTEM_COMPONENT@@@", component)
-        with open(new_path, 'w') as out_file:
-            out_file.write(contents)
+    return contents
 
 
 def new_jenkins_job(name, project_url, git_url, component):
     print "Creating new Jenkins Github Pull Request Builder job for %s" % name
-    print "Creating directory in jenkins...",
-    job_path = os.path.join(JENKINS_JOBS_DIR, name)
-    os.mkdir(job_path)
-    print "Done"
     print "Creating build config...",
+    config = new_config(TEMPLATE_CONFIG, name, project_url, git_url, component)
+    print "Done"
     try:
-        conf_path = os.path.join(JENKINS_JOBS_DIR, name, "config.xml")
-        new_config(TEMPLATE_CONFIG, name, project_url, git_url, component,
-                   conf_path)
+        print "Accessing Jenkins on localhost...",
+        j = jenkins.Jenkins('http://localhost:8080')
         print "Done"
-        print "Restart Jenkins using 'sudo service jenkins restart'"
-    except:
-        print "Failed"
-        print "Cleaning up job directory...",
-        shutil.rmtree(job_path, True)
+        print "Creating new Jenkins job...",
+        j.create_job(name, config)
         print "Done"
+    except urllib2.URLError, e:
+        print "Error connecting to Jenkins API: %s." % e
+    except jenkins.JenkinsException, e:
+        print "Error creating new job: %s." % e
 
 
 def main():
