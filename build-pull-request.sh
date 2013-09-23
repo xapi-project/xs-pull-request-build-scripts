@@ -58,7 +58,7 @@ echo "Starting build for local branch '${local_branch}'"
     rpms_dir=${WORKSPACE}/rpms-${local_branch}
     rm -rf ${rpms_dir}
     mkdir ${rpms_dir}
-    cp ${build_hg_path}/output/api/RPMS/i686/* ${rpms_dir}
+    cp ${build_hg_path}/output/${build_system_component}/RPMS/i686/* ${rpms_dir}
     echo "    ----------------------------------------------------------------"
     echo "    Deleting build.hg for local branch '${local_branch}'"
     sudo rm -rf ${build_hg_path}
