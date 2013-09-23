@@ -19,7 +19,7 @@ def usage():
            os.path.basename(__file__))
 
 
-def new_config(template, name, project_url, git_url, component, new_path):
+def new_config(template, name, project_url, git_url, component):
     with open(template, 'r') as in_file:
         contents = in_file.read()
         contents = contents.replace("@@@GIT_NAME@@@", name)
