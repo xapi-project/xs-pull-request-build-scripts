@@ -21,7 +21,7 @@ echo "------------------------------------------------------------------------"
 echo "Finding local branch for '${ghprbTargetBranch}' of '${GIT_URL}'..."
 local_branches=$(grep -e "\s${repo_name}\srefs/heads/${ghprbTargetBranch}\s" \
     ~xenhg/git-subscriptions | cut -d' ' -f5 | cut -d/ -f2)
-case $(echo local_branches | wc -w) in
+case $(echo ${local_branches} | wc -w) in
 0)
     echo "Error: Local build branch not found in git-subscriptions."
     exit 1
