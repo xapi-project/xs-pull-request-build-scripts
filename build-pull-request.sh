@@ -27,10 +27,10 @@ case $(echo ${local_branches} | wc -w) in
     exit 1
     ;;
 1)
-    echo "Github branch '${ghprbTargetBranch}' -> local branch ${local_branches}"
+    echo "Github branch '${ghprbTargetBranch}' -> local branch '${local_branches}'"
     ;;
 *)
-    echo "Github branch '${ghprbTargetBranch}' -> local branches ${local_branches}"
+    echo "Github branch '${ghprbTargetBranch}' -> local branches '${local_branches}'"
     echo "All local branches will be built..."
     ;;
 esac
