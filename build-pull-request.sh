@@ -10,6 +10,9 @@ echo "Pull request #: ${ghprbPullId}"
 echo "Ref: ${sha1}"
 echo "Commit: ${ghprbActualCommit}"
 echo "------------------------------------------------------------------------"
+echo "Removing artifacts from previous job..."
+rm -rf ${WORKSPACE}/rpms-*
+echo "------------------------------------------------------------------------"
 echo "Checking Jenkins job properly configured..."
 if [ -n ${build_system_component} ]; then
     echo "Testing pull request against ${build_system_component} component"
@@ -56,7 +59,6 @@ echo "Starting build for local branch '${local_branch}'"
     echo "--------------------------------------------------------------------"
     echo "Extracting RPMs from '${local_branch}' build.hg for archive..."
     rpms_dir=${WORKSPACE}/rpms-${local_branch}
-    rm -rf ${rpms_dir}
     mkdir ${rpms_dir}
     cp ${build_hg_path}/output/${build_system_component}/RPMS/i686/* ${rpms_dir}
     echo "--------------------------------------------------------------------"
