@@ -63,8 +63,11 @@ echo "Starting build for local branch '${local_branch}'"
     cp ${build_hg_path}/output/${build_system_component}/RPMS/i686/* ${rpms_dir}
     echo "--------------------------------------------------------------------"
     echo "Deleting build.hg for local branch '${local_branch}'"
-    sudo rm -rf ${build_hg_path}
+    rm -rf ${build_hg_path}
 done
+echo "------------------------------------------------------------------------"
+echo "Deleting temporary build root..."
+rm -rf /usr/local/builds/jenkins/${BUILD_TAG}
 echo "------------------------------------------------------------------------"
 echo "End of build script"
 echo "------------------------------------------------------------------------"
