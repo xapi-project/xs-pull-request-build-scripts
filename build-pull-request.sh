@@ -11,7 +11,7 @@ echo "Ref: ${sha1}"
 echo "Commit: ${ghprbActualCommit}"
 echo "------------------------------------------------------------------------"
 echo "Removing artifacts from previous job..."
-rm -rf ${WORKSPACE}/rpms-*
+sudo rm -rf ${WORKSPACE}/rpms-*
 echo "------------------------------------------------------------------------"
 echo "Checking Jenkins job properly configured..."
 if [ -n ${build_system_component} ]; then
@@ -63,11 +63,11 @@ echo "Starting build for local branch '${local_branch}'"
     cp ${build_hg_path}/output/${build_system_component}/RPMS/i686/* ${rpms_dir}
     echo "--------------------------------------------------------------------"
     echo "Deleting build.hg for local branch '${local_branch}'"
-    rm -rf ${build_hg_path}
+    sudo rm -rf ${build_hg_path}
 done
 echo "------------------------------------------------------------------------"
 echo "Deleting temporary build root..."
-rm -rf /usr/local/builds/jenkins/${BUILD_TAG}
+sudo rm -rf /usr/local/builds/jenkins/${BUILD_TAG}
 echo "------------------------------------------------------------------------"
 echo "End of build script"
 echo "------------------------------------------------------------------------"
