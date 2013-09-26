@@ -63,10 +63,16 @@ echo "Starting build for local branch '${local_branch}'"
     cp ${build_hg_path}/output/${build_system_component}/RPMS/i686/* ${rpms_dir}
     echo "--------------------------------------------------------------------"
     echo "Deleting build.hg for local branch '${local_branch}'"
-    sudo rm -rf ${build_hg_path}
+    sleep 3
+    wait_retry_time=0
+    until sudo rm -rf ${build_hg_path} || [ ${wait_retry_time} -eq 3 ]; do
+        echo "Deleting build.hg failed, sleeping and retrying..."
+        sleep $(( wait_retry_time++ ))
+    done
 done
 echo "------------------------------------------------------------------------"
 echo "Deleting temporary build root..."
+sleep 3
 sudo rm -rf /usr/local/builds/jenkins/${BUILD_TAG}
 echo "------------------------------------------------------------------------"
 echo "End of build script"
