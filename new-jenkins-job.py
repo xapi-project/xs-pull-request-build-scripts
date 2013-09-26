@@ -7,6 +7,7 @@ import jenkins
 import urllib2
 
 TEMPLATE_CONFIG = "./config.xml.template"
+ADMINS_CONFIG = "./admins.txt"
 
 
 def usage():
@@ -19,13 +20,20 @@ def usage():
            [--dry-run]""" % os.path.basename(__file__))
 
 
+def read_admins(path):
+    with open(path, 'r') as in_file:
+        return in_file.read()
+
+
 def new_config(template, name, project_url, git_url, component):
+    admins = read_admins(ADMINS_CONFIG)
     with open(template, 'r') as in_file:
         contents = in_file.read()
         contents = contents.replace("@@@GIT_NAME@@@", name)
         contents = contents.replace("@@@PROJECT_URL@@@", project_url)
         contents = contents.replace("@@@GIT_URL@@@", git_url)
         contents = contents.replace("@@@BUILD_SYSTEM_COMPONENT@@@", component)
+        contents = contents.replace("@@@ADMIN_LIST@@@", admins)
     return contents
 
 
