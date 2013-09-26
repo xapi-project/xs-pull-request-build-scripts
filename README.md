@@ -21,7 +21,7 @@ correct build-system product branch. It will then clone the pull request in
 question into `myrepos` and build. The output of the build for each of the
 product branches will be collected by Jenkins and archived.
 
-## new-jenkins-job.py
+## new_jenkins_job.py
 This python script will create a new Github Pull Request Builder related job
 for the specified repo. It's usage is as follows:
 
@@ -35,3 +35,12 @@ Usage: new-jenkins-job.py
            [-g|--git-url] <Git URL>
            [-c | --component] <Build system component>
 ```
+
+## admins.txt
+The contents of this file are used for populating the job's admins field. These
+people will be able to authorise building of pull requests for non-whitelisted
+users.
+
+## update_admins.py
+This file will update all Jenkins jobs on the host to use the admins contained
+in admins.txt. Use this when someone new joins the team.
