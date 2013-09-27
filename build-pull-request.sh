@@ -12,6 +12,8 @@ echo "Commit: ${ghprbActualCommit}"
 echo "------------------------------------------------------------------------"
 echo "Removing artifacts from previous job..."
 sudo rm -rf ${WORKSPACE}/rpms-*
+echo "Deleting temporary build root if last job failed..."
+sudo rm -rf /usr/local/builds/jenkins/jenkins-${JOB_NAME}-*
 echo "------------------------------------------------------------------------"
 echo "Checking Jenkins job properly configured..."
 if [ -n ${build_system_component} ]; then
