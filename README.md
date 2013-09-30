@@ -12,14 +12,17 @@ $ cd <JENKINS_HOME>
 $ git clone git://github.com/simonjbeaumont/xs-pull-request-build-scripts.git
 ```
 
-## build-pull-request.sh
+## build_pull_request.py
 This script is used by the Jenkins job and needs to be present in the directory
 specified by the install instructions.
 
-Based on the arguments passed to `new-jenkins-job.py`, it will clone the
+Based on the arguments passed to `new_jenkins_job.py`, it will clone the
 correct build-system product branch. It will then clone the pull request in
 question into `myrepos` and build. The output of the build for each of the
 product branches will be collected by Jenkins and archived.
+
+Note, the script relies on the presence of environment variables (but these
+should be populated by Jenkins if the job was correctly configured).
 
 ## new_jenkins_job.py
 This python script will create a new Github Pull Request Builder related job
