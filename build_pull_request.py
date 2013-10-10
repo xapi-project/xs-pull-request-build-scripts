@@ -114,14 +114,12 @@ def main():
                       local_branch)
         rpms_dir = os.path.join(os.environ['WORKSPACE'],
                                 "rpms-%s" % local_branch)
-
-        os.mkdir(rpms_dir)
-        for rpm in glob.glob(os.path.join(build_hg_path, "output",
-                                          os.environ['build_system_component'],
-                                          "RPMS/i686/*")):
-            print "Copying RPM: %s -> %s..." % (rpm, rpms_dir),
-            shutil.copy(rpm, rpms_dir)
-            print "OK"
+        output_rpms_dir = os.path.join(build_hg_path, "output",
+                                       os.environ['build_system_component'],
+                                       "RPMS")
+        print "Copying RPMS dir: %s -> %s..." % (output_rpms_dir, rpms_dir),
+        shutil.copytree(output_rpms_dir, rpms_dir)
+        print "OK"
 
         print_heading("Deleting build.hg for local branch '%s'" % local_branch)
         # Retry in case bind mounts haven't released

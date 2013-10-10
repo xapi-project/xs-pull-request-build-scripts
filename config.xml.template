@@ -108,7 +108,7 @@ Or, &lt;b&gt;create a copy&lt;/b&gt; of this job and:&#xd;
   </builders>
   <publishers>
     <hudson.tasks.ArtifactArchiver>
-      <artifacts>rpms*/*.rpm</artifacts>
+      <artifacts>rpms*</artifacts>
       <latestOnly>false</latestOnly>
       <allowEmptyArchive>false</allowEmptyArchive>
     </hudson.tasks.ArtifactArchiver>
