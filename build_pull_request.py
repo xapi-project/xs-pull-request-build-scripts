@@ -141,8 +141,10 @@ if __name__ == "__main__":
     try:
         main()
     except Exception, e:
-        print_heading("Job failed, attempting cleanup...")
+        print_heading("Job failed (%s), attempting cleanup..." % e)
         try:
             cleanup_job
+            sys.exit(1)
         except:
             print_heading("Warning: Cleanup failed!")
+            sys.exit(1)
