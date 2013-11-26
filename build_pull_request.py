@@ -146,5 +146,5 @@ if __name__ == "__main__":
             cleanup_job
             sys.exit(1)
         except:
-            print_heading("Warning: Cleanup failed!")
+            print_heading("Warning: Cleanup failed (%s)" % e)
             sys.exit(1)
