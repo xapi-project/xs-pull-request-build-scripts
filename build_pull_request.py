@@ -53,9 +53,17 @@ def get_local_branches_for_repo(repo, github_branch):
 
 
 def cleanup_job():
-    print_heading("Deleting temporary build root...")
-    execute("sudo rm -rf /usr/local/builds/jenkins/%s" %
-            os.environ['BUILD_TAG'])
+    build_root = os.path.join(LOCAL_BUILD_SPACE, os.environ['BUILD_TAG'])
+    print_heading("Deleting temporary build root: %s ..." % build_root)
+    # Retry in case bind mounts haven't released
+    for _ in range(1, 5):
+        try:
+            execute("sudo rm -rf %s" % build_root)
+        except:
+            print "Deletion failed, sleeping for 3 seconds and retrying..."
+            time.sleep(3)
+    if os.path.exists(build_root):
+        raise Exception("Cannot delete %s after build!" % build_root)
 
 
 def main():
