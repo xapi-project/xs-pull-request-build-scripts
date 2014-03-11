@@ -133,10 +133,10 @@ def main():
         # Retry in case bind mounts haven't released
         for _ in range(1, 5):
             try:
-                time.sleep(3)
+                time.sleep(10)
                 execute("sudo rm -rf %s" % build_hg_path)
             except:
-                print "Deletion failed, sleeping for 3 seconds and retrying..."
+                print "Deletion failed, sleeping for 10 seconds and retrying..."
         if os.path.exists(build_hg_path):
             raise Exception("Cannot delete build.hg after build!")
 
