@@ -8,7 +8,7 @@ import new_jenkins_job
 
 def update_config_admins(config):
     new_admins = new_jenkins_job.read_admins(new_jenkins_job.ADMINS_CONFIG)
-    new_config = re.sub(r"<adminlist>.*</adminlist>",
+    new_config = re.sub(r"<adminlist>(.|\n)*</adminlist>",
                         "<adminlist>%s</adminlist>" % new_admins,
                         config)
     return new_config
