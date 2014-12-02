@@ -2,7 +2,7 @@
 Scripts used by the Jenkins Github Pull Request Builder jobs
 
 ## Installation
-It's importatnt that these scripts are installed in Jenkins' home directory.
+It's important that these scripts are installed in Jenkins' home directory.
 This is usually `/var/lib/jenkins/` but it may have been configured differently
 at Jenkins installation. SSH into your Jenkins CI server and execute the
 following:
