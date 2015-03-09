@@ -2,11 +2,11 @@
 
 import os
 import sys
-import re
 import subprocess
 import shutil
 import time
 import glob
+import ConfigParser
 
 LOCAL_BUILD_SPACE = "/usr/local/builds/jenkins"
 REQUIRED_ENV_VARS = ['ghprbTargetBranch', 'ghprbPullId', 'ghprbActualCommit',
@@ -41,15 +41,15 @@ def repo_name_of_git_url(git_url):
     return git_url.split('/')[-1].split('.')[0]
 
 
-def get_local_branches_for_repo(repo, github_branch):
-    with open("/home/xenhg/git-subscriptions") as f:
-        p = re.compile("\s%s\srefs/heads/%s\s" % (repo, github_branch))
-        branches = []
-        for line in [l for l in f.readlines() if p.search(l)]:
-            print "Found relevant line in git subscriptions:"
-            print "\t%s" % line
-            branches.append(line.split()[4].split('/')[1])
-    return branches
+def org_name_of_github_url(github_url):
+    return github_url.split('/')[-2]
+
+
+def get_local_branches(service, org, repo, refspec):
+    head = ",".join((service, org, repo, refspec))
+    config = ConfigParser.RawConfigParser()
+    config.read("/usr/groups/sources/hg/closed/branch-info.hg/sync-git/git-subscriptions.cfg")
+    return [s for s in config.sections() if config.has_option(s, head)]
 
 
 def cleanup_job():
@@ -71,7 +71,9 @@ def main():
     print_heading("Checking Jenkins job properly configured...")
     assert_environment_contains_vars(REQUIRED_ENV_VARS)
     repo_name = repo_name_of_git_url(os.environ['GIT_URL'])
+    org_name = org_name_of_github_url(os.environ['GIT_URL'])
     print "Repo: %s" % repo_name
+    print "Github organisation: %s" % org_name
     print "Github target branch: %s" % os.environ['ghprbTargetBranch']
     print "Pull request #: %s" % os.environ['ghprbPullId']
     print "Ref: %s" % os.environ['sha1']
@@ -83,8 +85,9 @@ def main():
 
     print_heading("Finding local branches for Github branch '%s' of '%s'..." %
                   (os.environ['ghprbTargetBranch'], os.environ['GIT_URL']))
-    local_branches = get_local_branches_for_repo(
-        repo_name, os.environ['ghprbTargetBranch'])
+    remote_ref = "refs/heads/%s" % os.environ['ghprbTargetBranch']
+    local_branches = get_local_branches("github", org_name, repo_name,
+                                        remote_ref)
     if len(local_branches) == 0:
         print "Error: Local build branch not found in git-subscriptions."
         sys.exit(2)
