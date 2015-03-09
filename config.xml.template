@@ -103,7 +103,8 @@ Or, &lt;b&gt;create a copy&lt;/b&gt; of this job and:&#xd;
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>~/xs-pull-request-build-scripts/build_pull_request.py</command>
+      <command>export RPM_CACHE_DIR=/local/bigdisc/rpmcache
+~/xs-pull-request-build-scripts/build_pull_request.py</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>

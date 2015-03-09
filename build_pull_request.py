@@ -118,6 +118,12 @@ def main():
         print_heading("Start the build...")
 
         execute("make --directory=%s manifest-latest" % build_hg_path)
+        execute("make --directory=%s %s-clone" %
+                (build_hg_path, os.environ['build_system_component']))
+
+        if os.path.exists(os.path.join(build_hg_path, "obj", "repos", "planex")):
+		symlink_dest = os.path.join(build_hg_path, "obj", "repos", "planex", "mk", "rpmcache")
+                os.symlink("/rpmcache", symlink_dest)
         execute("make --directory=%s %s-build" %
                 (build_hg_path, os.environ['build_system_component']))
 
