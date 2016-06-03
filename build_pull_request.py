@@ -45,11 +45,17 @@ def org_name_of_github_url(github_url):
     return github_url.split('/')[-2]
 
 
-def get_local_branches(service, org, repo, refspec):
+def get_local_repos(service, org, repo, refspec):
     head = ",".join((service, org, repo, refspec))
     config = ConfigParser.RawConfigParser()
     config.read("/usr/groups/sources/hg/closed/branch-info.hg/sync-git/git-subscriptions.cfg")
-    return [s for s in config.sections() if config.has_option(s, head)]
+    result = []
+    for branch in config.sections():
+        if config.has_option(branch, head):
+            dest_repo = config.get(branch, head).split(',')[0].split('/')[-1]
+            dest_repo_name = dest_repo.rstrip(".git")
+            result.append((branch, dest_repo_name))
+    return result
 
 
 def cleanup_job():
@@ -86,18 +92,17 @@ def main():
     print_heading("Finding local branches for Github branch '%s' of '%s'..." %
                   (os.environ['ghprbTargetBranch'], os.environ['GIT_URL']))
     remote_ref = "refs/heads/%s" % os.environ['ghprbTargetBranch']
-    local_branches = get_local_branches("github", org_name, repo_name,
-                                        remote_ref)
-    if len(local_branches) == 0:
+    local_repos = get_local_repos("github", org_name, repo_name, remote_ref)
+    if len(local_repos) == 0:
         print "Error: Local build branch not found in git-subscriptions."
         sys.exit(2)
     else:
         print ("Github branch '%s' -> local branches '%s'" %
-               (os.environ['ghprbTargetBranch'], local_branches))
-        if len(local_branches) > 1:
+               (os.environ['ghprbTargetBranch'], [r[0] for r in local_repos]))
+        if len(local_repos) > 1:
             print "All local branches will be built..."
 
-    for local_branch in local_branches:
+    for (local_branch, local_repo_name) in local_repos:
         print_heading("Starting build for local branch '%s'" % local_branch)
         print "Fetching local branch '%s' from build system..." % local_branch
         build_hg_path = os.path.join(LOCAL_BUILD_SPACE,
@@ -107,7 +112,7 @@ def main():
                 (local_branch, build_hg_path))
 
         print_heading("Injecting repo into build.hg/myrepos...")
-        local_repo = os.path.join(build_hg_path, "myrepos", repo_name)
+        local_repo = os.path.join(build_hg_path, "myrepos", local_repo_name)
         execute("git clone file://%s %s" %
                 (os.environ['WORKSPACE'], local_repo))
         git_exe = "git --git-dir=%s/.git" % local_repo
