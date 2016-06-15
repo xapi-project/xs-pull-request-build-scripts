@@ -15,6 +15,7 @@ REQUIRED_ENV_VARS = ['ghprbTargetBranch', 'ghprbPullId', 'ghprbActualCommit',
 
 
 def execute(command):
+    print "execute: %s" % command
     rc = subprocess.call(command.split())
     if rc != 0:
         raise Exception("Error executing command %s: Return code = %s" %
