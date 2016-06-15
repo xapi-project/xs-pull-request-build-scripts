@@ -54,7 +54,7 @@ def get_local_repos(service, org, repo, refspec):
     for branch in config.sections():
         if config.has_option(branch, head):
             dest_repo = config.get(branch, head).split(',')[0].split('/')[-1]
-            dest_repo_name = dest_repo.rstrip(".git")
+            dest_repo_name = dest_repo.split(".git")[0]
             result.append((branch, dest_repo_name))
     return result
 
